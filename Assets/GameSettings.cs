@@ -8,6 +8,8 @@ public class GameSettings : MonoBehaviour
     public Animator animator;
     public GameObject pauseMenuUI;
 
+    public GameObject pauseOverlay;
+
     private bool isPaused = false;
 
     void Update()
@@ -27,30 +29,36 @@ public class GameSettings : MonoBehaviour
 
     public void Resume()
     {
-        animator.Play("SlideOut");
-        StartCoroutine(HideAfterAnimation());
+        animator.Play("SlideOutPause");
+        // StartCoroutine(HideAfterAnimation());
         Time.timeScale = 1f;
         isPaused = false;
+        pauseOverlay.SetActive(false);
     }
 
     void Pause()
     {
         pauseMenuUI.SetActive(true);
-        animator.Play("SlideIn");
+        animator.Play("SlideInPause");
         Time.timeScale = 0f;
         isPaused = true;
+        pauseOverlay.SetActive(true);
     }
 
     IEnumerator HideAfterAnimation()
     {
         yield return new WaitForSecondsRealtime(0.3f);
         pauseMenuUI.SetActive(false);
+
     }
 
-    public void BackToMenu()
+    public void ExitGame()
     {
         SceneManager.LoadSceneAsync(0);
     }
 
-    
+    public void Restart()
+    {
+        SceneManager.LoadSceneAsync(1);
+    }
 }
